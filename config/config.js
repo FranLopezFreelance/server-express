@@ -1,0 +1,1 @@
+module.exports.SEED = 'user-seed-token';
