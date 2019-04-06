@@ -2,7 +2,9 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
+//Routes Requires
 var imagesRoutes = require('./routes/images');
 var uploadRoutes = require('./routes/upload');
 var searchRoutes = require('./routes/search');
@@ -14,6 +16,9 @@ var appRoutes = require('./routes/app');
 
 // Express Server
 var app = express();
+
+// CORS
+app.use(cors());
 
 app.listen(3000, () => {
     console.log('Server: \x1b[32m%s\x1b[0m','online');

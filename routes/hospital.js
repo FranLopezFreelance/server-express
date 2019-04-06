@@ -15,8 +15,39 @@ app.get('/', (req, res, next) => {
     from = Number(from);
 
     Hospital.find({})
-        .skip(from)
-        .limit(5)
+        .populate('user', 'name img email')
+        .exec((err, hospitals) => {   
+            if (err) {
+                return res.status(500).json({
+                    ok:  false,
+                    message: 'Error al buscar Hospital',
+                    errors: err
+                });
+            }
+
+            if(!hospitals) {
+                return res.status(400).json({
+                    ok:  false,
+                    message: 'No existe un Hospital con id: ' + id,
+                    errors: { message: 'No existe un hospital con ese Id' }
+                });
+            }
+
+            res.status(200).json({
+                ok:  true,
+                hospitals: hospitals
+            });
+    });
+});
+
+/////////
+// GET HOSPITAL
+/////////
+app.get('/:id', (req, res) => {
+
+    var id = req.params.id;
+
+    Hospital.findById(id)
         .populate('user', 'name email')
         .exec((err, hospitals) => {   
             if (err) {
@@ -44,6 +75,7 @@ app.get('/', (req, res, next) => {
             });
         });
 });
+
 
 /////////
 // UPDATE

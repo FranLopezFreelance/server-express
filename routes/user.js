@@ -15,7 +15,7 @@ app.get('/', (req, res, next) => {
     var from = req.query.from;
     from = Number(from);
 
-    User.find({}, 'name email img role')
+    User.find({}, 'name email img role google')
         .skip(from)
         .limit(5)
         .exec((err, users) => {   
@@ -99,7 +99,7 @@ app.put('/:id', auth.tokenVerify , (req, res) => {
 // POST
 /////////
 
-app.post('/', auth.tokenVerify , (req, res) => {
+app.post('/', (req, res) => {
 
     var body = req.body;
 
@@ -139,6 +139,8 @@ app.delete('/:id', auth.tokenVerify , (req, res) => {
 
     var id = req.params.id;
 
+    
+
     User.findByIdAndRemove(id, ( err, deletedUser ) => {
         if (err) {
             return res.status(500).json({
@@ -157,6 +159,8 @@ app.delete('/:id', auth.tokenVerify , (req, res) => {
         }
 
         deletedUser.password = '=)';
+
+        User.deleteMany({});
 
         res.status(200).json({
             ok:  true,
